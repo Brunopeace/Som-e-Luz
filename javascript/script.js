@@ -40,11 +40,21 @@ setTimeout(() => {
 }, 15000);
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Esconde o loader após 2 segundos
-    setTimeout(() => {
-        const loading = document.getElementById("loading");
+    const loading = document.getElementById("loading");
+
+    // Verifica se a sessão já foi iniciada
+    const hasVisited = sessionStorage.getItem("hasVisited");
+
+    if (!hasVisited) {
+        // Mostra o loader e salva a sessão como visitada
+        sessionStorage.setItem("hasVisited", "true");
+        setTimeout(() => {
+            loading.style.display = "none";
+        }, 3000); // Tempo de exibição do loader (2 segundos)
+    } else {
+        // Esconde o loader se a sessão já foi iniciada
         loading.style.display = "none";
-    }, 3000);
+    }
 });
 
 function verificarAcesso() {
