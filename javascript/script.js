@@ -39,6 +39,14 @@ setTimeout(() => {
     }
 }, 15000);
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Esconde o loader após 2 segundos
+    setTimeout(() => {
+        const loading = document.getElementById("loading");
+        loading.style.display = "none";
+    }, 3000);
+});
+
 function verificarAcesso() {
     const uuidEsperado = ['3e1d329a-2742-4b9a-a5b5-e5acf888a784'];
     let uuidArmazenado = localStorage.getItem('uuid');
