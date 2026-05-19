@@ -1,59 +1,46 @@
-
-
-// Nome do cache
-const CACHE_NAME = 'gerenciador-de-clientes-v1';
-
-// Arquivos a serem cacheados
-const urlsToCache = [
-    '/',
-    '/index.html',
-    '/css/styles.css',
-    '/img/icon192.png',
-    '/img/icon512.png',
-    '/img/iconpadrao1024.png.png',
-    '/js/script.js'
+const CACHE_NAME = 'som-e-luz-v1';
+const ASSETS = [
+  './',
+  './index.html',
+  './css/style.css',
+  './js/script.js',
+  './manifest.json',
+  './img/icon-192.png',
+  './img/icon-512.png',
+  './img/ambienteexclusivoesofisticado.jpg',
+  './img/somprofissionalcomdea.jpg',
+  './img/suafestabrilhacomnossapistadeled.jpg'
 ];
 
-// Instala o Service Worker e faz o cache dos arquivos estáticos
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                console.log('Service Worker: fazendo cache dos arquivos');
-                return cache.addAll(urlsToCache);
-            })
-    );
+// Instala o Service Worker e guarda os arquivos essenciais no cache
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
+  );
 });
 
-// Ativa o Service Worker e remove caches antigos
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {
-                        console.log('Service Worker: removendo cache antigo', cache);
-                        return caches.delete(cache);
-                    }
-                })
-            );
+// Ativa e limpa caches antigos se houver atualização
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
         })
-    );
+      );
+    })
+  );
 });
 
-// Intercepta requisições e responde com os arquivos do cache
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                if (response) {
-                    return response; // Se encontrar no cache, retorna o cache
-                }
-                console.log('Service Worker: arquivo não encontrado no cache, fazendo requisição:', event.request.url);
-                return fetch(event.request); // Se não encontrar no cache, faz a requisição normalmente
-            }).catch(() => {
-                // Aqui você pode adicionar uma página offline personalizada
-                return caches.match('/index.html');
-            })
-    );
+// Serve os arquivos direto do cache quando estiver offline
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((cachedResponse) => {
+      return cachedResponse || fetch(e.request);
+    })
+  );
 });
