@@ -1,7 +1,8 @@
 {
-  "name": "D&A",
-  "short_name": "D&A",
-  "start_url": "./index.html",
+  "id": "da-som-luz-pwa",
+  "name": "D&A Som e Luz",
+  "short_name": "D&A Som Luz",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0d1117",
   "theme_color": "#221b22",
@@ -10,12 +11,14 @@
     {
       "src": "img/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "img/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
