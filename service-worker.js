@@ -1,14 +1,15 @@
-const CACHE_NAME = 'som-e-luz-v30';
+const CACHE_NAME = 'som-e-luz-v33';
 const ASSETS = [
-  'index.html',
-  'css/style.css',
-  'js/script.js',
-  'manifest.json',
-  'img/icon-192.png',
-  'img/icon-512.png',
-  'img/ambienteexclusivoesofisticado.jpg',
-  'img/somprofissionalcomdea.jpg',
-  'img/suafestabrilhacomnossapistadeled.jpg'
+  '/Som-e-Luz/',
+  '/Som-e-Luz/index.html',
+  '/Som-e-Luz/css/style.css',
+  '/Som-e-Luz/js/script.js',
+  '/Som-e-Luz/manifest.json',
+  '/Som-e-Luz/img/icon-192.png',
+  '/Som-e-Luz/img/icon-512.png',
+  '/Som-e-Luz/img/ambienteexclusivoesofisticado.jpg',
+  '/Som-e-Luz/img/somprofissionalcomdea.jpg',
+  '/Som-e-Luz/img/suafestabrilhacomnossapistadeled.jpg'
 ];
 
 // Instala o Service Worker e guarda os arquivos essenciais no cache
@@ -16,7 +17,7 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
-    }).then(() => self.skipWaiting()) // Força o novo service worker a se tornar o ativo imediatamente
+    }).then(() => self.skipWaiting())
   );
 });
 
@@ -31,7 +32,7 @@ self.addEventListener('activate', (e) => {
           }
         })
       );
-    }).then(() => self.clients.claim()) // Garante que as abas atuais usem o sw corrigido imediatamente
+    }).then(() => self.clients.claim())
   );
 });
 
