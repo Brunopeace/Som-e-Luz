@@ -1,4 +1,4 @@
-const CACHE_NAME = 'som-e-luz-v29';
+const CACHE_NAME = 'som-e-luz-v30';
 const ASSETS = [
   'index.html',
   'css/style.css',
