@@ -2,7 +2,7 @@ const CACHE_NAME = 'som-e-luz-v1';
 const ASSETS = [
   './',
   './index.html',
-  './css/style.css',
+  './css/stilo.css',
   './javascript/script.js',
   './manifest.json',
   './img/icon-192.png',
