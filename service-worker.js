@@ -1,4 +1,4 @@
-const CACHE_NAME = 'som-e-luz-v2';
+const CACHE_NAME = 'som-e-luz-v3';
 const ASSETS = [
   './',
   './index.html',
