@@ -2,195 +2,201 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="img/icon512.png">
-    <title>Gerenciador de clientes</title>
-    <link rel="stylesheet" type="text/css" href="css/estilo.css">
-    <link rel="manifest" href="manifest.json">
-
-<style>
-.overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95);
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  z-index: 9999;
-}
-
-.overlay-content {
-  background: #1e1e1e;
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 0 15px rgba(255,255,255,0.3);
-}
-
-.overlay-content h2 {
-  margin-bottom: 15px;
-  font-size: 22px;
-}
-
-.overlay-content p {
-  margin-bottom: 20px;
-  font-size: 16px;
-}
-
-#btnWhatsApp {
-  background: #25d366;
-  border: none;
-  padding: 12px 20px;
-  color: white;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-#btnWhatsApp:hover {
-  background: #20b954;
-}
-</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>D&A Som e Luz</title>
+    <link rel="icon" href="img/icon-512.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link class="manifest" href="manifest.json">
 </head>
 <body>
-
-<div id="trialOverlay" class="overlay" style="display:none;">
-  <div class="overlay-content">
-    <h2>⚠️ Período de teste expirado</h2>
-    <p>Seu acesso terminou.<br>
-       Para renovar, fale com o administrador.</p>
-    <button id="btnWhatsApp">📲 Falar no WhatsApp</button>
-  </div>
+    
+<div id="install-container" style="display: none; padding: 16px; margin-bottom: 16px;">
+    <button id="btn-install-pwa" class="btn-primary btn-block" style="background: linear-gradient(135deg, var(--neon-blue), #0055cc); display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <span class="nav-icon">📲</span> Instalar Aplicativo D&A
+    </button>
 </div>
 
-<div id="loading">
-    <div class="spinner">
-        <span>Carregando...</span>
-    </div>
-</div>
 
-    <img id="logo" src="img/logo-padrao.png" alt="Logomarca" class="logo">
+    <header class="app-header">
+        <div class="logo-area">
+            <span class="logo-txt-blue">D&A</span> <span class="logo-txt-white">Som e Luz</span>
+        </div>
+    </header>
 
-<h1><strong>Painel de vencimento</strong></h1>
-    
-    <button id="backToTop" title="Voltar ao Topo">
-
-<button onclick="toggleDarkMode()" class="meio" class="slide-in">Claro Escuro</button><button id="backup" onclick="exportarClientes()">Backup Clientes</button><br><br>
-
-    <div class="input-container slide-in">
-<input type="file" id="importarClientes" style="display: none;"/>
-<label for="importarClientes" class="button">Importar Backup <img src="img/diskette.png" class="diskette"></label><br>
-        <label for="inputPesquisar">Pesquisar Cliente <img src="img/lupa.png" class="lupa"></label>
-        <input type="text" id="inputPesquisar" oninput="pesquisarCliente()" placeholder="Pesquisar cliente">
-    </div>
-
-    <div class="input-container slide-in">
-        <label for="inputNome">Adicionar cliente aqui<img src="img/face.png" class="face"></label>
-        <input type="text" id="inputNome" required placeholder="Nome do cliente">
-    </div>
-    
-    <div class="input-container slide-in">
-        <label for="inputTelefone">Telefone do cliente <img src="img/cell.png" class="cell"></label>
-        <input type="tel" id="inputTelefone" required placeholder="Telefone do cliente">
-    </div>
-    
-    <div class="input-container slide-in">
-        <label for="inputData">Data de vencimento <img src="img/calendario.png" class="calendario"></label>
-        <input type="date" id="inputData" required>
-    </div>
-    
-    <button id="btnExcluirSelecionados" onclick="excluirClientesSelecionados()">Excluir Seleção</button><button onclick="adicionarCliente()" class="slide-in">Adicionar Cliente</button><br><br>
-    
-  <div id="feedback" style="display: none;"></div>
-<div id="infoClientes2" class="slide-in"></div><br>
-    <div id="infoClientes" class="slide-in"></div>
-    <div class="table-container slide-in">
-           
-<br>
-<button id="toggleLixeira" onclick="alternarLixeira()">Abrir Lixeira</button>
-<br>
-<div id="containerLixeira" style="display: none;">
-    <div id="quantidadeClientesLixeira"></div>
-    
-    <div id="lixeira">
-    <div id="feedbackR" style="display: none;"></div>
-        <button id="restaurarSelecionados" onclick="restaurarSelecionados()">Restaurar /Sel</button>
-        <button id="esvaziarLixeira" onclick="esvaziarLixeira()">Esvaziar Lixeira</button>
-        <input type="text" id="pesquisarLixeira" placeholder="Pesquisar na lixeira" oninput="pesquisarClientesLixeira()">
-        <table id="tabelaLixeira">
-            <thead>
-                <tr>
-                    <th>
-    
-<input type="checkbox" id="selecionarTodos" onclick="toggleSelecionarTodos(this)">
-
-                    </th>
-                </tr>
-            </thead>
+    <main class="app-content">
+        
+        <section id="tab-home" class="app-screen active">
             
-            <tbody id="clientList">
-                <!-- Clientes da lixeira serão carregados aqui -->
-            </tbody>
-        </table>
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide">
+                        <img src="img/somprofissionalcomdea.jpg" alt="Mesa de Som">
+                        <div class="carousel-caption">Som Profissional com D&A</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="img/ambienteexclusivoesofisticado.jpg" alt="Salão Decorado com Iluminação">
+                        <div class="carousel-caption">Ambiente Exclusivo e Sofisticado</div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="img/suafestabrilhacomnossapistadeled.jpg" alt="Pista de LED Paris Infinity">
+                        <div class="carousel-caption">Sua Festa brilha com nossa Pista de LED</div>
+                    </div>
+                </div>
+                <div class="carousel-indicators">
+                    <span class="indicator active" data-slide-to="0"></span>
+                    <span class="indicator" data-slide-to="1"></span>
+                    <span class="indicator" data-slide-to="2"></span>
+                </div>
+            </div>
+
+            <div class="welcome-banner">
+                <h1>Transforme seu evento em um show inesquecível!</h1>
+                <p>Estrutura completa de som, iluminação e efeitos visuais.</p>
+            </div>
+            
+            <div class="promo-card">
+                <div class="promo-badge">PROMOÇÃO</div>
+                <h3>Pista Paris Infinity</h3>
+                <p>Por tempo limitado para os 10 primeiros clientes!</p>
+                <button class="btn-primary" onclick="switchTab('budget')">Aproveitar Oferta</button>
+            </div>
+        </section>
+
+        <section id="tab-services" class="app-screen">
+    <div class="services-header">
+        <h2>Nossas Estruturas</h2>
+        <p>Confira fotos reais dos nossos equipamentos e produções exclusivas.</p>
     </div>
-</div>
+    
+    <div class="services-grid">
+        <div class="service-card-gallery">
+            <div class="card-image-wrapper">
+                <img src="img/somprofissionalcomdea.jpg" alt="Mesa de DJ e Controladores D&A">
+                <span class="service-badge">Premium</span>
+            </div>
+            <div class="card-gallery-content">
+                <h3>Sonorização & DJ</h3>
+                <p>Equipamentos profissionais de alta definição com controladores modernos de led, notebooks integrados e repertório totalmente personalizado para agitar a pista de dança do início ao fim.</p>
+                <button class="btn-secondary-outline" onclick="switchTab('budget')">Simular com este</button>
+            </div>
+        </div>
+
+        <div class="service-card-gallery">
+            <div class="card-image-wrapper">
+                <img src="img/ambienteexclusivoesofisticado.jpg" alt="Iluminação Cênica em Salão de Festa">
+                <span class="service-badge">Alta Tecnologia</span>
+            </div>
+            <div class="card-gallery-content">
+                <h3>Iluminação Cênica & Pista</h3>
+                <p>Moving heads de última geração montados em estruturas de treliças de alumínio (Grids), refletores em LED embutidos para decoração de paredes e projeção mapeada de logos ou brasões personalizados.</p>
+                <button class="btn-secondary-outline" onclick="switchTab('budget')">Simular com este</button>
+            </div>
+        </div>
+
+        <div class="service-card-gallery">
+            <div class="card-image-wrapper">
+                <img src="img/suafestabrilhacomnossapistadeled.jpg" alt="Pista de LED Paris Infinity D&A">
+                <span class="service-badge">Mais Vendido ✨</span>
+            </div>
+            <div class="card-gallery-content">
+                <h3>Pista Paris Infinity (LED)</h3>
+                <p>A incrível pista de dança com efeito de espelho infinito tecnológico. Composta por placas modulares de LED de alta resistência que criam profundidade visual mágica e única para o momento das fotos.</p>
+                <button class="btn-secondary-outline" onclick="switchTab('budget')">Simular com este</button>
+            </div>
+        </div>
+    </div>
+</section>
 
 
-        <table>
-    <thead>
-        <tr>
-         <th><input type="checkbox" id="select-all"></th>
-            <th>Nome</th>
-            <th>Telefone</th>
-            <th>Data de Vencimento</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody id="corpoTabela">
-<!-- Linhas de clientes adicionadas dinamicamente -->
-    </tbody>
-</table>
-    </div>
+        <section id="tab-budget" class="app-screen">
+    <h2>Simulador de Orçamento</h2>
+    <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 16px;">Preencha os detalhes do seu show e receba a proposta no ato!</p>
+    
+    <form id="budget-form" onsubmit="sendWhatsApp(event)">
+        <div class="form-group">
+            <label for="client-name">Seu Nome</label>
+            <input type="text" id="client-name" required placeholder="Ex: Maria Silva">
+        </div>
+
+        <div class="form-group">
+            <label for="event-type">Tipo de Evento</label>
+            <select id="event-type">
+                <option value="Casamento">Casamento 👰🤵</option>
+                <option value="15 Anos">Festa de 15 Anos 👑</option>
+                <option value="Formatura">Formatura 🎓</option>
+                <option value="Corporativo">Evento Corporativo 💼</option>
+                <option value="Aniversário / Outro">Aniversário / Outro 🎉</option>
+            </select>
+        </div>
+
+        <div class="form-group-row" style="display: flex; gap: 10px; margin-bottom: 16px;">
+            <div style="flex: 1;">
+                <label for="event-date">Data do Evento</label>
+                <input type="date" id="event-date" required style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white;">
+            </div>
+            <div style="flex: 1;">
+                <label for="event-guests">Nº de Convidados</label>
+                <input type="number" id="event-guests" placeholder="Ex: 150" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white;">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="event-location">Local / Cidade do Evento</label>
+            <input type="text" id="event-location" required placeholder="Ex: Salão de Festas, Centro - RJ">
+        </div>
+
+        <div class="form-group">
+            <label style="margin-bottom: 10px; font-weight: bold; color: var(--neon-blue);">Selecione a Estrutura Desejada:</label>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" id="item-sound" value="Sonorização Premium + DJ Profissional">
+                <div>
+                    <strong>🔊 Sonorização + DJ</strong>
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin: 0;">Som de alta definição adequado ao número de convidados.</p>
+                </div>
+            </label>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" id="item-light" value="Iluminação de Pista (Moving Heads & Lasers)">
+                <div>
+                    <strong>💡 Iluminação Balada & Cênica</strong>
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin: 0;">Moving heads, refletores LED nas paredes e grids.</p>
+                </div>
+            </label>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" id="item-pista" value="Pista Paris Infinity (Efeito Espelho de LED)">
+                <div>
+                    <strong>✨ Pista Paris Infinity</strong>
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin: 0;">A famosa pista de dança iluminada com efeito infinito.</p>
+                </div>
+            </label>
+        </div>
+
+        <button type="submit" class="btn-primary btn-block" style="margin-top: 20px; font-size: 1.05rem;">
+            🚀 Gerar Proposta e Chamar no WhatsApp
+        </button>
+    </form>
+</section>
+
+
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('home', this)">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Início</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('services', this)">
+            <span class="nav-icon">🛠️</span>
+            <span class="nav-label">Serviços</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('budget', this)">
+            <span class="nav-icon">📝</span>
+            <span class="nav-label">Orçamento</span>
+        </button>
+    </nav>
+
     <script src="javascript/script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<footer>
-        © 2024 Produzido por <a href="https://wa.me/5581982258462?text=%2AOl%C3%A1%2C+fiquei+interessado+nesse+seu+aplicativo+web%2C+quanto+custa+%3F%2A"><strong>BRUNO-PEACE</strong></a>
-</footer>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const overlay = document.getElementById("trialOverlay");
-  const btnWhatsApp = document.getElementById("btnWhatsApp");
-
-  // 📲 Número de WhatsApp
-  const numeroWhatsApp = "5581982258462"; 
-  const mensagemWhatsApp = encodeURIComponent("Olá, quero renovar meu acesso ao aplicativo.");
-
-  // 📌 Data e hora de expiração
-  const expDate = new Date("2025-09-29T09:16:00"); 
-  // formato: "AAAA-MM-DDTHH:mm:ss"
-
-  // Função para verificar se já expirou
-  function verificarExpiracao() {
-    const agora = new Date();
-    if (agora >= expDate) {
-      overlay.style.display = "flex"; // bloqueia a tela
-    }
-  }
-
-  // Checa ao carregar
-  verificarExpiracao();
-
-  // ⏱️ Checa de 30 em 30 segundos (pode mudar para 1000 → 1 segundo)
-  setInterval(verificarExpiracao, 30000);
-
-  // Botão WhatsApp
-  btnWhatsApp.addEventListener("click", () => {
-    window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemWhatsApp}`, "_blank");
-  });
-});
-</script>
 </body>
 </html>
