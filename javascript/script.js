@@ -8,9 +8,9 @@ if ('serviceWorker' in navigator) {
 }
 
 // =========================================================================
-// 1. ALTERNADOR DE ABAS (TABS - ESTILO NATIVO)
+// 1. ALTERNADOR DE ABAS COM SELEÇÃO DINÂMICA DE CHECKBOX
 // =========================================================================
-function switchTab(tabId, element) {
+function switchTab(tabId, element, checkboxId) {
     // Esconde todas as telas
     document.querySelectorAll('.app-screen').forEach(screen => {
         screen.classList.remove('active');
@@ -22,12 +22,22 @@ function switchTab(tabId, element) {
         targetScreen.classList.add('active');
     }
     
+    // Se um ID de checkbox foi passado, marca ele automaticamente
+    if (checkboxId) {
+        const targetCheckbox = document.getElementById(checkboxId);
+        if (targetCheckbox) {
+            targetCheckbox.checked = true;
+            // Opcional: Se quiser disparar um evento para salvar o estado caso use ouvintes nos checkboxes
+            targetCheckbox.dispatchEvent(new Event('change'));
+        }
+    }
+    
     // Atualiza o estado visual dos botões da nav bar se o elemento for passado
     if (element) {
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         element.classList.add('active');
     } else {
-        // Se a troca foi via botão interno (ex: card de promoção)
+        // Se a troca foi via botão interno (ex: card de promoção ou galeria de serviços)
         document.querySelectorAll('.nav-item').forEach(item => {
             const onClickAttr = item.getAttribute('onclick');
             if (onClickAttr && onClickAttr.includes(tabId)) {
@@ -37,6 +47,9 @@ function switchTab(tabId, element) {
             }
         });
     }
+
+    // Rola a tela para o topo para garantir uma boa experiência de navegação nativa
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // =========================================================================
