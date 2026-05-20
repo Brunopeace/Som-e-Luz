@@ -275,7 +275,7 @@ Seus dados foram gerados pelo Simulador PWA.`;
             
             // Oculta o modal de volta para o caso de o usuário retornar ao app
             successModal.style.display = 'none';
-        }, 1500);
+        }, 4000);
     } else {
         // Fallback de segurança: se o modal não existir no HTML, dispara o WhatsApp direto
         window.open(whatsappUrl, '_blank');
