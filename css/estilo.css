@@ -479,3 +479,17 @@ input:focus, select:focus {
         box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4);
     }
 }
+
+/* Efeito visual para campos obrigatórios vazios */
+.input-error {
+    border: 2px solid #ff3333 !important;
+    background-color: rgba(255, 51, 51, 0.05) !important;
+    animation: shakeError 0.4s ease-in-out;
+}
+
+/* Pequena vibração lateral para chamar atenção */
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
