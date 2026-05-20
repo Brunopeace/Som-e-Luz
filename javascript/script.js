@@ -103,15 +103,76 @@ if (inputLocation) {
 }
 
 // =========================================================================
-// 3. INTEGRAÇÃO AVANÇADA E DISPARO DETALHADO PARA O WHATSAPP
+// 3. INTEGRAÇÃO AVANÇADA E DISPARO DETALHADO PARA O WHATSAPP (COM VALIDAÇÃO VISUAL)
 // =========================================================================
 function sendWhatsApp(event) {
     event.preventDefault();
     
+    // Remove marcações de erro antigas antes de validar novamente
+    const inputs = [inputName, inputDate, inputLocation];
+    inputs.forEach(input => {
+        if (input) input.classList.remove('input-error');
+    });
+
+    // 1. Validação dos campos de texto obrigatórios
+    let hasError = false;
+    
+    if (inputName && !inputName.value.trim()) {
+        inputName.classList.add('input-error');
+        hasError = true;
+    }
+    if (inputDate && !inputDate.value) {
+        inputDate.classList.add('input-error');
+        hasError = true;
+    }
+    if (inputLocation && !inputLocation.value.trim()) {
+        inputLocation.classList.add('input-error');
+        hasError = true;
+    }
+
+    // Se houver erro em algum campo de texto, cria e exibe o aviso flutuante personalizado
+    if (hasError) {
+        let toast = document.getElementById('validation-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'validation-toast';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #ff3333;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: bold;
+                z-index: 10000;
+                box-shadow: 0 4px 15px rgba(255, 51, 51, 0.4);
+                font-size: 0.95rem;
+                text-align: center;
+                width: 85%;
+                max-width: 350px;
+                animation: shakeError 0.4s ease-in-out;
+            `;
+            document.body.appendChild(toast);
+        }
+        toast.innerText = "⚠️ Por favor, preencha todos os campos obrigatórios em destaque!";
+        toast.style.backgroundColor = '#ff3333';
+        toast.style.color = 'white';
+        toast.style.display = 'block';
+        
+        // Esconde o aviso após 4 segundos
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 4000);
+        
+        return;
+    }
+    
     const name = inputName.value;
-    const eventType = selectEvent.value;
+    const eventType = selectEvent ? selectEvent.value : "Não informado";
     const rawDate = inputDate.value;
-    const guests = inputGuests.value || "Não informado";
+    const guests = (inputGuests && inputGuests.value) ? inputGuests.value : "Não informado";
     const location = inputLocation.value;
     
     // Formata a data americana (AAAA-MM-DD) para o padrão nacional (DD/MM/AAAA)
@@ -136,9 +197,37 @@ function sendWhatsApp(event) {
         includesPista = true;
     }
     
-    // Validação preventiva para garantir que escolheu algo
+    // 2. Validação preventiva das caixas de seleção (Estruturas)
     if (selectedItems.length === 0) {
-        alert("Por favor, selecione ao menos um item da estrutura para calcular o seu orçamento!");
+        let toast = document.getElementById('validation-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'validation-toast';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: bold;
+                z-index: 10000;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                font-size: 0.95rem;
+                text-align: center;
+                width: 85%;
+                max-width: 350px;
+            `;
+            document.body.appendChild(toast);
+        }
+        toast.innerText = "🛠️ Selecione ao menos uma estrutura para o orçamento!";
+        toast.style.backgroundColor = '#ffcc00';
+        toast.style.color = '#000000';
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 4000);
         return;
     }
 
