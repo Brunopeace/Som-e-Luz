@@ -1,46 +1,72 @@
-const CACHE_NAME = 'som-e-luz-v42';
-const ASSETS = [
-  '/Som-e-Luz/',
-  '/Som-e-Luz/index.html',
-  '/Som-e-Luz/css/style.css',
-  '/Som-e-Luz/js/script.js',
-  '/Som-e-Luz/manifest.json',
-  '/Som-e-Luz/img/icon-192.png',
-  '/Som-e-Luz/img/icon-512.png',
-  '/Som-e-Luz/img/ambienteexclusivoesofisticado.jpg',
-  '/Som-e-Luz/img/somprofissionalcomdea.jpg',
-  '/Som-e-Luz/img/suafestabrilhacomnossapistadeled.jpg'
-];
+// ===============================
+// FORÇAR O SW NOVO A ASSUMIR O CONTROLE
+// ===============================
+self.addEventListener('install', (event) => {
+  self.skipWaiting(); // força ativação imediata
 
-// Instala o Service Worker e guarda os arquivos essenciais no cache
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    }).then(() => self.skipWaiting())
-  );
-});
+    const CACHE_NAME = 'som-e-luz-v45';
+  const urlsToCache = [
+      './',
+      'index.html',
+      'css/style.css',
+      'js/script.js',
+      'manifest.json',
+      'img/icon-192.png',
+      'img/icon-512.png',
+      'img/ambienteexclusivoesofisticado.jpg',
+      'img/somprofissionalcomdea.jpg',
+      'img/suafestabrilhacomnossapistadeled.jpg'
+  ];
 
-// Ativa e limpa caches antigos se houver atualização
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
+
+  event.waitUntil(
+      caches.open(CACHE_NAME)
+        .then(cache => {
+            console.log('Service Worker: fazendo cache dos arquivos');
+            return cache.addAll(urlsToCache);
         })
-      );
-    }).then(() => self.clients.claim())
   );
 });
 
-// Serve os arquivos direto do cache quando estiver offline
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      return cachedResponse || fetch(e.request);
-    })
+// ===============================
+// ATIVAÇÃO — REMOVE CACHE ANTIGO E ASSUME CONTROLE
+// ===============================
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+      caches.keys().then((cacheNames) => {
+          return Promise.all(
+              cacheNames.map((cache) => {
+                  if (cache !== 'som-e-luz-v42') {
+                      console.log('Service Worker: removendo cache antigo:', cache);
+                      return caches.delete(cache);
+                  }
+              })
+          );
+      })
+  );
+
+  clients.claim(); // assume controle imediato das abas abertas
+});
+
+// ===============================
+// FETCH — ENTREGA DO CACHE + ONLINE
+// ===============================
+self.addEventListener('fetch', (event) => {
+
+  // 🔥 NÃO INTERCEPTAR PEDIDOS DO FIREBASE CLOUD MESSAGING
+  if (event.request.url.includes("fcm.googleapis.com")) {
+      return fetch(event.request); // deixa passar direto
+  }
+
+  event.respondWith(
+      caches.match(event.request)
+          .then((response) => {
+              if (response) {
+                  return response; // retorna do cache
+              }
+              console.log('Service Worker: buscando online:', event.request.url);
+              return fetch(event.request);
+          })
+          .catch(() => caches.match('/index.html'))
   );
 });
