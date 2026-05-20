@@ -263,8 +263,23 @@ Seus dados foram gerados pelo Simulador PWA.`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
     
-    // Abre o chat no aplicativo do WhatsApp com o texto pronto para envio
-    window.open(whatsappUrl, '_blank');
+    // 🔥 LÓGICA DE TRANSIÇÃO PREMIUM (MODAL DE SUCESSO)
+    const successModal = document.getElementById('success-modal');
+    if (successModal) {
+        // Exibe o modal aplicando flexbox para centralizar na tela
+        successModal.style.display = 'flex';
+        
+        // Aguarda 1.5 segundos (tempo da animação da barra de progresso) antes de ir para o WhatsApp
+        setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+            
+            // Oculta o modal de volta para o caso de o usuário retornar ao app
+            successModal.style.display = 'none';
+        }, 1500);
+    } else {
+        // Fallback de segurança: se o modal não existir no HTML, dispara o WhatsApp direto
+        window.open(whatsappUrl, '_blank');
+    }
 }
 
 // =========================================================================
@@ -366,4 +381,43 @@ window.addEventListener('appinstalled', (evt) => {
     if (installContainer) {
         installContainer.style.display = 'none';
     }
+});
+
+// =========================================================================
+// 5. MONITORIZAÇÃO INTELIGENTE DE LIGAÇÃO À INTERNET (MODO OFFLINE)
+// =========================================================================
+const offlineToast = document.getElementById('offline-toast');
+const btnSubmitForm = document.querySelector('form button[type="submit"]');
+
+function updateOnlineStatus() {
+    if (navigator.onLine) {
+        // O DISPOSITIVO ESTÁ ONLINE
+        if (offlineToast) {
+            offlineToast.style.display = 'none';
+        }
+        if (btnSubmitForm) {
+            btnSubmitForm.disabled = false;
+            btnSubmitForm.classList.remove('btn-offline-disabled');
+            btnSubmitForm.innerHTML = '🚀 Gerar Proposta e Chamar no WhatsApp';
+        }
+    } else {
+        // O DISPOSITIVO FICOU OFFLINE
+        if (offlineToast) {
+            offlineToast.style.display = 'flex';
+        }
+        if (btnSubmitForm) {
+            btnSubmitForm.disabled = true;
+            btnSubmitForm.classList.add('btn-offline-disabled');
+            btnSubmitForm.innerHTML = '🔒 Ligar à Internet para Enviar';
+        }
+    }
+}
+
+// Escuta os eventos nativos do navegador/telemóvel de queda e retorno de sinal
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+// Executa a verificação assim que a página termina de carregar para validar o estado atual
+window.addEventListener('DOMContentLoaded', () => {
+    updateOnlineStatus();
 });
