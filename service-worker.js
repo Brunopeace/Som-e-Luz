@@ -1,18 +1,18 @@
-const CACHE_NAME = 'som-e-luz-v37';
+const CACHE_NAME = 'som-e-luz-v31';
 const ASSETS = [
-  './',
-  'index.html',
-  'css/style.css',
-  'js/script.js',
-  'manifest.json',
-  'img/icon-192.png',
-  'img/icon-512.png',
-  'img/ambienteexclusivoesofisticado.jpg',
-  'img/somprofissionalcomdea.jpg',
-  'img/suafestabrilhacomnossapistadeled.jpg'
+  '/Som-e-Luz/',
+  '/Som-e-Luz/index.html',
+  '/Som-e-Luz/css/style.css',
+  '/Som-e-Luz/js/script.js',
+  '/Som-e-Luz/manifest.json',
+  '/Som-e-Luz/img/icon-192.png',
+  '/Som-e-Luz/img/icon-512.png',
+  '/Som-e-Luz/img/ambienteexclusivoesofisticado.jpg',
+  '/Som-e-Luz/img/somprofissionalcomdea.jpg',
+  '/Som-e-Luz/img/suafestabrilhacomnossapistadeled.jpg'
 ];
 
-// Instala o Service Worker e guarda os arquivos essenciais
+// Instala o Service Worker e guarda os arquivos essenciais no cache
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -21,7 +21,7 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// Ativa e remove caches velhos que estão quebrando o carrossel
+// Ativa e limpa caches antigos se houver atualização
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -36,17 +36,11 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Intercepta as requisições com segurança
+// Serve os arquivos direto do cache quando estiver offline
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
-      // Se estiver no cache, usa. Se não, busca na rede na hora
       return cachedResponse || fetch(e.request);
-    }).catch(() => {
-      // Previne travamentos caso a rede falhe e o arquivo não esteja no cache
-      if (e.request.mode === 'navigate') {
-        return caches.match('index.html');
-      }
     })
   );
 });
