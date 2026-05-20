@@ -41,10 +41,29 @@ body {
     z-index: 100;
 }
 
+/* Garante que a área do texto ocupe o espaço correto sem interferência */
+/* Garante que a área do texto ocupe o espaço correto e adiciona espaçamento */
 .logo-area {
     font-weight: 800;
     font-size: 1.3rem;
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px; /* 👈 Cria um espaçamento perfeito e controlado entre "D&A" e "Som e Luz" */
+}
+
+
+/* ESTILIZAÇÃO DA LOGO NO CANTO ESQUERDO */
+.header-logo-left {
+    position: absolute;
+    left: 16px;          /* Afastamento elegante da borda esquerda */
+    top: 50%;            /* Alinha no meio vertical */
+    transform: translateY(-50%); /* Ajuste cirúrgico para centralizar perfeitamente */
+    height: 35px;        /* Altura proporcional para a barra de 60px */
+    width: 35px;         /* Mantém o ícone perfeitamente quadrado 1:1 */
+    border-radius: 6px;  /* Cantos levemente arredondados estilo app premium */
+    object-fit: cover;
 }
 
 .logo-txt-blue { color: var(--neon-blue); }
@@ -253,10 +272,10 @@ input:focus, select:focus {
 
 /* AS FOTOS DO CLIENTE COM CORTE INTELIGENTE */
 .carousel-slide img {
-    width: 35%;
+    width: 33%;
     height: 40vh;
-   /* object-fit: cover; */ /* Enquadra a imagem sem distorções na área definida */
-   /* object-position: top center; */ /* AJUSTADO: Prioriza o topo da foto (teto, refletores e logo D&A) */
+    /* Enquadra a imagem sem distorções na área definida */
+    /* AJUSTADO: Prioriza o topo da foto (teto, refletores e logo D&A) */
     display: block;
 }
 
@@ -406,4 +425,57 @@ input:focus, select:focus {
     background: rgba(0, 210, 255, 0.1);
     border-color: var(--neon-blue);
     color: var(--neon-blue);
+}
+
+/* Container Flutuante do PWA */
+.pwa-install-floating {
+    display: none; /* Controlado pelo seu JS */
+    position: fixed;
+    bottom: 80px;  /* Fica exatamente acima da sua bottom-nav */
+    left: 70%;
+    transform: translateX(-50%);
+    width: 60%;
+    max-width: 400px;
+    z-index: 9999; /* Garante que fica por cima de qualquer conteúdo */
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+/* Botão Estilizado com o Tema D&A Som e Luz */
+.btn-install-neon {
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #00d2ff, #0055cc);
+    color: #ffffff;
+    border: none;
+    border-radius: 50px; /* Cantos arredondados estilo pílula/nativo */
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: pulseButton 2s infinite;
+}
+
+/* Feedback ao tocar/clicar */
+.btn-install-neon:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);
+}
+
+/* Animação suave de pulsação neon */
+@keyframes pulseButton {
+    0% {
+        box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 8px 30px rgba(0, 210, 255, 0.7);
+    }
+    100% {
+        box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4);
+    }
 }
