@@ -11,17 +11,20 @@
 </head>
 <body>
     
-<div id="install-container" style="display: none; padding: 16px; margin-bottom: 16px;">
-    <button id="btn-install-pwa" class="btn-primary btn-block" style="background: linear-gradient(135deg, var(--neon-blue), #0055cc); display: flex; align-items: center; justify-content: center; gap: 10px;">
-        <span class="nav-icon">📲</span> Instalar Aplicativo D&A
+<div id="install-container" class="pwa-install-floating">
+    <button id="btn-install-pwa" class="btn-install-neon">
+        <span class="nav-icon">📲</span> Instalar App
     </button>
 </div>
 
     <header class="app-header">
-        <div class="logo-area">
-            <span class="logo-txt-blue">D&A</span> <span class="logo-txt-white">Som e Luz</span>
-        </div>
-    </header>
+    <div class="logo-area">
+        <img src="img/icon-512.png" alt="Logo D&A" class="header-logo-left">
+        
+        <span class="logo-txt-blue">D&A</span> <span class="logo-txt-white">Som e Luz</span>
+    </div>
+</header>
+
 
     <main class="app-content">
         
@@ -30,15 +33,20 @@
             <div class="carousel-container">
                 <div class="carousel-track" id="carouselTrack">
                     <div class="carousel-slide">
-                        <img src="img/somprofissionalcomdea.jpg" alt="Mesa de Som">
+                        <img src="img/suafestabrilhacomnossapistadeled.jpg" alt="Mesa de Som">
                         <div class="carousel-caption">Som Profissional com D&A</div>
                     </div>
                     <div class="carousel-slide">
-                        <img src="img/ambienteexclusivoesofisticado.jpg" alt="Salão Decorado com Iluminação">
+                        <img src="img/pistaparis.jpg" alt="Salão Decorado com Iluminação">
                         <div class="carousel-caption">Ambiente Exclusivo e Sofisticado</div>
                     </div>
                     <div class="carousel-slide">
-                        <img src="img/suafestabrilhacomnossapistadeled.jpg" alt="Pista de LED Paris Infinity">
+                        <img src="img/somprofissionalcomdea.jpg" alt="Pista de LED Paris Infinity">
+                        <div class="carousel-caption">Sua Festa brilha com nossa Pista de LED</div>
+                    </div>
+                    
+                    <div class="carousel-slide">
+                        <img src="img/ambienteexclusivoesofisticado.jpg" alt="Pista de LED Paris Infinity">
                         <div class="carousel-caption">Sua Festa brilha com nossa Pista de LED</div>
                     </div>
                 </div>
@@ -46,6 +54,7 @@
                     <span class="indicator active" data-slide-to="0"></span>
                     <span class="indicator" data-slide-to="1"></span>
                     <span class="indicator" data-slide-to="2"></span>
+                    <span class="indicator" data-slide-to="3"></span>
                 </div>
             </div>
 
@@ -62,7 +71,7 @@
             </div>
         </section>
 
-        <section id="tab-services" class="app-screen">
+<section id="tab-services" class="app-screen">
     <div class="services-header">
         <h2>Nossas Estruturas</h2>
         <p>Confira fotos reais dos nossos equipamentos e produções exclusivas.</p>
@@ -77,7 +86,7 @@
             <div class="card-gallery-content">
                 <h3>Sonorização & DJ</h3>
                 <p>Equipamentos profissionais de alta definição com controladores modernos de led, notebooks integrados e repertório totalmente personalizado para agitar a pista de dança do início ao fim.</p>
-                <button class="btn-secondary-outline" onclick="switchTab('budget')">Simular com este</button>
+                <button class="btn-secondary-outline" onclick="switchTab('budget', null, 'item-sound')">Simular com este</button>
             </div>
         </div>
 
@@ -89,7 +98,7 @@
             <div class="card-gallery-content">
                 <h3>Iluminação Cênica & Pista</h3>
                 <p>Moving heads de última geração montados em estruturas de treliças de alumínio (Grids), refletores em LED embutidos para decoração de paredes e projeção mapeada de logos ou brasões personalizados.</p>
-                <button class="btn-secondary-outline" onclick="switchTab('budget')">Simular com este</button>
+                <button class="btn-secondary-outline" onclick="switchTab('budget', null, 'item-light')">Simular com este</button>
             </div>
         </div>
 
@@ -101,12 +110,11 @@
             <div class="card-gallery-content">
                 <h3>Pista Paris Infinity (LED)</h3>
                 <p>A incrível pista de dança com efeito de espelho infinito tecnológico. Composta por placas modulares de LED de alta resistência que criam profundidade visual mágica e única para o momento das fotos.</p>
-                <button class="btn-secondary-outline" onclick="switchTab('budget')">Simular com este</button>
+                <button class="btn-secondary-outline" onclick="switchTab('budget', null, 'item-pista')">Simular com este</button>
             </div>
         </div>
     </div>
 </section>
-
 
         <section id="tab-budget" class="app-screen">
     <h2>Simulador de Orçamento</h2>
