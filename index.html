@@ -186,6 +186,11 @@
     </form>
 </section>
     </main>
+<div id="offline-toast" class="offline-notification">
+    <span class="offline-icon">🌐</span> 
+    <p>Sem ligação à internet. O seu rascunho está seguro no dispositivo!</p>
+</div>
+
 
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('home', this)">
@@ -201,6 +206,20 @@
             <span class="nav-label">Orçamento</span>
         </button>
     </nav>
+    
+    <div id="success-modal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="success-icon-circle">
+            <span class="checkmark">✓</span>
+        </div>
+        <h3>Proposta Gerada!</h3>
+        <p>Estamos preparando seu rascunho. Você será redirecionado para o WhatsApp da <strong>D&A Som e Luz</strong>...</p>
+        <div class="modal-loader-bar">
+            <div class="modal-loader-progress"></div>
+        </div>
+    </div>
+</div>
+
 
     <script src="javascript/script.js"></script>
 </body>
