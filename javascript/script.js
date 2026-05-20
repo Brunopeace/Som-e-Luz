@@ -1,7 +1,7 @@
 // REGISTRO DO SERVICE WORKER PARA O PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
+        navigator.serviceWorker.register('./sw.js')
             .then(reg => console.log('✅ Service Worker registrado com sucesso!', reg))
             .catch(err => console.error('Erro ao registrar o Service Worker:', err));
     });
@@ -216,47 +216,52 @@ function restartAutoSlide() {
     }, slideInterval);
 }
 
+// CONTROLADOR DE INSTALAÇÃO DO PWA
+let deferredPrompt;
+const installContainer = document.getElementById('install-container');
+const btnInstallPwa = document.getElementById('btn-install-pwa');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* código para instalar o aplicativo */
-  let deferredPrompt;
+// 1. Intercepta o evento padrão do navegador
 window.addEventListener('beforeinstallprompt', (e) => {
+    // Impede que o banner padrão do navegador apareça do nada
     e.preventDefault();
+    
+    // Guarda o evento na variável global para usar no clique do botão
     deferredPrompt = e;
-    const installButton = document.createElement('button');
-    installButton.innerText = 'Instalar App';
-    installButton.style.position = 'fixed';
-    installButton.style.bottom = '10px';
-    installButton.style.right = '10px';
-    document.body.appendChild(installButton);
-    installButton.addEventListener('click', () => {
-        deferredPrompt.prompt();
-   deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-   console.log('Usuário aceitou instalar o app');
-            } else {
-   console.log('Usuário rejeitou instalar o app');
-            }
-            deferredPrompt = null;
-            installButton.remove();
-        });
-    });
-});
-setTimeout(() => {
-    if (deferredPrompt && installButton) {
-        installButton.remove();
-        console.log('Botão de instalação removido por inatividade.');
+    
+    // Faz a sua div customizada aparecer na tela com estilo
+    if (installContainer) {
+        installContainer.style.display = 'block';
     }
-}, 15000);
+});
+
+// 2. Lógica de clique no botão de instalação
+if (btnInstallPwa) {
+    btnInstallPwa.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        
+        // Dispara o prompt nativo do sistema operacional (Android, iOS ou Windows)
+        deferredPrompt.prompt();
+        
+        // Aguarda a resposta do cliente
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`Resposta do usuário para a instalação: ${outcome}`);
+        
+        // Limpa a variável porque o prompt só pode ser disparado uma vez por evento
+        deferredPrompt = null;
+        
+        // Esconde o botão após a ação do usuário
+        if (installContainer) {
+            installContainer.style.display = 'none';
+        }
+    });
+}
+
+// 3. Monitora se o app foi instalado com sucesso
+window.addEventListener('appinstalled', (evt) => {
+    console.log('O aplicativo D&A Som e Luz foi instalado com sucesso!');
+    // Garante que o botão suma de vez caso o usuário tenha instalado por outro método
+    if (installContainer) {
+        installContainer.style.display = 'none';
+    }
+});
