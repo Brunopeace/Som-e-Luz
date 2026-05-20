@@ -4,7 +4,7 @@
 self.addEventListener('install', (event) => {
   self.skipWaiting(); // força ativação imediata
 
-    const CACHE_NAME = 'som-e-luz-v48';
+    const CACHE_NAME = 'som-e-luz-v49';
   const urlsToCache = [
       './',
       'index.html',
