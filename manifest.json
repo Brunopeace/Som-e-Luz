@@ -2,7 +2,7 @@
   "id": "/Som-e-Luz/",
   "name": "D&A Som e Luz",
   "short_name": "D&A Som Luz",
-  "start_url": "/Som-e-Luz/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0d1117",
   "theme_color": "#221b22",
